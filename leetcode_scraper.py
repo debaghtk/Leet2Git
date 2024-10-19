@@ -18,6 +18,12 @@ session.cookies.set("LEETCODE_SESSION", LEETCODE_SESSION, domain=".leetcode.com"
 # Set up logging
 logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
 
+# Define the data structures in order of precedence (most complex to least)
+DATA_STRUCTURES = [
+    "Graph", "Tree", "Binary Search Tree", "Binary Tree", "Heap (Priority Queue)",
+    "Trie", "Stack", "Queue", "Linked List", "Hash Table", "Matrix", "Array", "String"
+]
+
 def get_solved_problems():
     url = "https://leetcode.com/graphql"
     query = """
@@ -174,29 +180,51 @@ def get_file_extension(lang):
         logging.warning(f"Unknown language: {lang}. Using .txt extension.")
         return 'txt'
 
+def get_topic(problem):
+    tags = [tag['name'] for tag in problem['topicTags']]
+    
+    # Check for data structures in order of precedence
+    for ds in DATA_STRUCTURES:
+        if ds in tags:
+            return ds
+    
+    # If no data structure is found, use the first tag (likely an algorithm)
+    return tags[0] if tags else "Miscellaneous"
+
 def save_solution(problem, solution, lang):
-    folder_name = "leetcode_solutions"
-    if not os.path.exists(folder_name):
-        os.makedirs(folder_name)
+    base_folder = "leetcode_solutions"
+    if not os.path.exists(base_folder):
+        os.makedirs(base_folder)
+    
+    topic = get_topic(problem)
+    
+    # Create a folder for the topic if it doesn't exist
+    topic_folder = os.path.join(base_folder, topic)
+    if not os.path.exists(topic_folder):
+        os.makedirs(topic_folder)
     
     file_extension = get_file_extension(lang)
     file_name = f"{problem['frontendQuestionId']}_{problem['titleSlug']}.{file_extension}"
-    file_path = os.path.join(folder_name, file_name)
+    file_path = os.path.join(topic_folder, file_name)
     
-    logging.info(f"Saving solution for {problem['title']} with extension .{file_extension}")
+    logging.info(f"Saving solution for {problem['title']} in {topic} folder with extension .{file_extension}")
     
     with open(file_path, 'w', encoding='utf-8') as f:
         f.write(f"# {problem['title']}\n")
         f.write(f"# Difficulty: {problem['difficulty']}\n")
         f.write(f"# Language: {lang}\n")
+        f.write(f"# Topic: {topic}\n")
+        f.write(f"# Tags: {', '.join(tag['name'] for tag in problem['topicTags'])}\n")
         f.write(f"# Link: https://leetcode.com/problems/{problem['titleSlug']}/\n\n")
         f.write(solution)
 
 def solution_exists(problem, lang):
-    folder_name = "leetcode_solutions"
+    base_folder = "leetcode_solutions"
+    topic = get_topic(problem)
+    topic_folder = os.path.join(base_folder, topic)
     file_extension = get_file_extension(lang)
     file_name = f"{problem['frontendQuestionId']}_{problem['titleSlug']}.{file_extension}"
-    file_path = os.path.join(folder_name, file_name)
+    file_path = os.path.join(topic_folder, file_name)
     return os.path.exists(file_path)
 
 def main():
@@ -240,7 +268,7 @@ def main():
             logging.warning(f"Could not fetch solution for: {problem['title']}")
         sleep(1)  # To avoid overwhelming the server
 
-    logging.info(f"\nAll new solutions have been saved to the 'leetcode_solutions' folder.")
+    logging.info(f"\nAll new solutions have been saved to topic-specific folders within the 'leetcode_solutions' directory.")
 
 # New function to get just the language of the solution
 def get_solution_language(title_slug):
