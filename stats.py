@@ -12,15 +12,17 @@ def count_files_in_subfolders(base_path):
     
     return folder_counts
 
-def print_table(folder_counts):
+def generate_markdown_table(folder_counts):
     # Sort the folders by count in descending order
     sorted_counts = sorted(folder_counts.items(), key=lambda x: x[1], reverse=True)
     
     # Prepare data for tabulate
     table_data = [["Topic", "Count"]] + sorted_counts
     
-    # Print the table
-    print(tabulate(table_data, headers="firstrow", tablefmt="grid"))
+    # Generate the markdown table
+    markdown_table = tabulate(table_data, headers="firstrow", tablefmt="pipe")
+    
+    return markdown_table
 
 def main():
     base_path = "leetcode_solutions"
@@ -35,11 +37,13 @@ def main():
         print("No subfolders found in the 'leetcode_solutions' directory.")
         return
     
-    print_table(folder_counts)
+    markdown_output = "# LeetCode Solutions Statistics\n\n"
+    markdown_output += generate_markdown_table(folder_counts)
     
     total_files = sum(folder_counts.values())
-    print(f"\nTotal number of solutions: {total_files}")
+    markdown_output += f"\n\n**Total number of solutions:** {total_files}\n"
+    
+    print(markdown_output)
 
 if __name__ == "__main__":
     main()
-
