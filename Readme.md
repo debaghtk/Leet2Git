@@ -24,3 +24,26 @@ pip install -r requirements.txt
 ## Project Information
 
 The main Python script for this project was generated in Cursor text editor with the Claude-3.5-Sonnet model.
+
+
+# LeetCode Solutions Statistics
+
+| Topic                 | Count |
+| :-------------------- | ----: |
+| Tree                  |    22 |
+| Array                 |    22 |
+| Graph                 |     7 |
+| String                |     6 |
+| Hash Table            |     6 |
+| Math                  |     5 |
+| Trie                  |     4 |
+| Linked List           |     4 |
+| Matrix                |     3 |
+| Divide and Conquer    |     2 |
+| Stack                 |     2 |
+| Heap (Priority Queue) |     2 |
+
+**Total number of solutions:** 85
+
+
+<!-- End of LeetCode Statistics -->

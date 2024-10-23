@@ -1,5 +1,6 @@
 import os
 from tabulate import tabulate
+import re
 
 def count_files_in_subfolders(base_path):
     folder_counts = {}
@@ -24,6 +25,32 @@ def generate_markdown_table(folder_counts):
     
     return markdown_table
 
+def update_readme(markdown_content):
+    readme_path = "README.md"
+    if not os.path.exists(readme_path):
+        print(f"The file '{readme_path}' does not exist.")
+        return
+
+    with open(readme_path, 'r') as file:
+        content = file.read()
+
+    # Define the start and end markers for the statistics section
+    start_marker = "# LeetCode Solutions Statistics"
+    end_marker = "<!-- End of LeetCode Statistics -->"
+
+    # Check if the markers exist, if not, add them
+    if start_marker not in content:
+        content += f"\n\n{start_marker}\n\n{end_marker}\n"
+
+    # Replace the content between the markers
+    pattern = re.compile(f"{re.escape(start_marker)}.*?{re.escape(end_marker)}", re.DOTALL)
+    updated_content = pattern.sub(f"{start_marker}\n\n{markdown_content}\n\n{end_marker}", content)
+
+    with open(readme_path, 'w') as file:
+        file.write(updated_content)
+
+    print(f"README.md has been updated with the latest statistics.")
+
 def main():
     base_path = "leetcode_solutions"
     
@@ -37,13 +64,12 @@ def main():
         print("No subfolders found in the 'leetcode_solutions' directory.")
         return
     
-    markdown_output = "# LeetCode Solutions Statistics\n\n"
-    markdown_output += generate_markdown_table(folder_counts)
+    markdown_output = generate_markdown_table(folder_counts)
     
     total_files = sum(folder_counts.values())
     markdown_output += f"\n\n**Total number of solutions:** {total_files}\n"
     
-    print(markdown_output)
+    update_readme(markdown_output)
 
 if __name__ == "__main__":
     main()
