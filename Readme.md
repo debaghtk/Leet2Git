@@ -32,8 +32,8 @@ The main Python script for this project was generated in Cursor text editor with
 |:----------------------|--------:|
 | Tree                  |      22 |
 | Array                 |      22 |
+| Hash Table            |       8 |
 | Graph                 |       7 |
-| Hash Table            |       7 |
 | String                |       6 |
 | Math                  |       5 |
 | Trie                  |       4 |
@@ -43,7 +43,7 @@ The main Python script for this project was generated in Cursor text editor with
 | Stack                 |       2 |
 | Heap (Priority Queue) |       2 |
 
-**Total number of solutions:** 87
+**Total number of solutions:** 88
 
 
 <!-- End of LeetCode Statistics -->
