@@ -30,11 +30,11 @@ The main Python script for this project was generated in Cursor text editor with
 
 | Topic                 |   Count |
 |:----------------------|--------:|
-| Tree                  |      22 |
-| Array                 |      22 |
-| Hash Table            |       8 |
+| Tree                  |      23 |
+| Array                 |      23 |
+| Hash Table            |       9 |
 | Graph                 |       7 |
-| String                |       6 |
+| String                |       7 |
 | Math                  |       5 |
 | Trie                  |       4 |
 | Matrix                |       4 |
@@ -43,7 +43,7 @@ The main Python script for this project was generated in Cursor text editor with
 | Stack                 |       2 |
 | Heap (Priority Queue) |       2 |
 
-**Total number of solutions:** 88
+**Total number of solutions:** 92
 
 
 <!-- End of LeetCode Statistics -->
